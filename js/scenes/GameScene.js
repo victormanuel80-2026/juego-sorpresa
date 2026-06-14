@@ -98,6 +98,15 @@ class GameScene extends Phaser.Scene {
 
         const levelW = this.levelData.goalX + 400;
 
+        // Generate gaps for the level so they can be accessed in background/flowers/ground
+        this.gaps = [];
+        if (this.levelIdx >= 2) {
+            const numGaps = Math.min(this.levelIdx - 1, 3);
+            for (let g = 0; g < numGaps; g++) {
+                this.gaps.push(Phaser.Math.Between(8 + g * 10, 12 + g * 10));
+            }
+        }
+
         // ============ BACKGROUND ============
         this.createBackground(levelW);
 
@@ -187,12 +196,14 @@ class GameScene extends Phaser.Scene {
             skyGradient.setScrollFactor(0);
             skyGradient.fillGradientStyle(0x87CEEB, 0x87CEEB, 0xB0E0FF, 0xB0E0FF, 1);
             skyGradient.fillRect(0, 0, 800, 600);
+            skyGradient.setDepth(-10);
         } else {
             // Park: sunset/dusk gradient
             const skyGradient = this.add.graphics();
             skyGradient.setScrollFactor(0);
             skyGradient.fillGradientStyle(0x1a0533, 0x1a0533, 0xFF6B35, 0xFF8C42, 1);
             skyGradient.fillRect(0, 0, 800, 600);
+            skyGradient.setDepth(-10);
         }
 
         // --- Layer 1: Far background (mountains/distant scenery) - slow parallax ---
@@ -200,11 +211,13 @@ class GameScene extends Phaser.Scene {
         this.bgFar.setOrigin(0, 0);
         this.bgFar.setScrollFactor(0);
         this.bgFar.setAlpha(0.6);
+        this.bgFar.setDepth(-9);
 
         // --- Layer 2: Main background image - medium parallax ---
         this.bgMain = this.add.tileSprite(0, 0, 800, 600, bgKey);
         this.bgMain.setOrigin(0, 0);
         this.bgMain.setScrollFactor(0);
+        this.bgMain.setDepth(-8);
 
         // --- Layer 3: Clouds with slow drift animation ---
         this.clouds = [];
@@ -218,6 +231,7 @@ class GameScene extends Phaser.Scene {
             cloud.setScrollFactor(0);
             cloud.cloudSpeed = Phaser.Math.FloatBetween(0.08, 0.25);
             cloud.baseX = cx;
+            cloud.setDepth(-5);
             this.clouds.push(cloud);
         }
 
@@ -226,6 +240,7 @@ class GameScene extends Phaser.Scene {
             // Distant tree silhouettes (soft, no lines)
             const treesG = this.add.graphics();
             treesG.setScrollFactor(0.4);
+            treesG.setDepth(-6);
             for (let i = 0; i < Math.floor(levelW / 140); i++) {
                 const tx = i * 140 + Phaser.Math.Between(20, 80);
                 const ty = Phaser.Math.Between(400, 440);
@@ -240,6 +255,7 @@ class GameScene extends Phaser.Scene {
             // Park: distant building/tree silhouettes
             const silG = this.add.graphics();
             silG.setScrollFactor(0.3);
+            silG.setDepth(-6);
             for (let i = 0; i < Math.floor(levelW / 150); i++) {
                 const tx = i * 150 + Phaser.Math.Between(20, 80);
                 const ty = Phaser.Math.Between(390, 430);
@@ -265,9 +281,9 @@ class GameScene extends Phaser.Scene {
                 petal.setAlpha(Phaser.Math.FloatBetween(0.3, 0.7));
                 petal.petalSpeed = Phaser.Math.FloatBetween(0.2, 0.6);
                 petal.petalDrift = Phaser.Math.FloatBetween(-0.3, 0.3);
+                petal.setDepth(3);
                 this.petals.push(petal);
             }
-            // Flowers are created in createFlowers() after ground
         } else {
             // Fireflies for park
             this.fireflies = [];
@@ -284,17 +300,45 @@ class GameScene extends Phaser.Scene {
                 ff.ffSpeed = Phaser.Math.FloatBetween(0.01, 0.03);
                 ff.ffDriftX = Phaser.Math.FloatBetween(-0.2, 0.2);
                 ff.ffDriftY = Phaser.Math.FloatBetween(-0.15, 0.15);
+                ff.setDepth(3);
                 this.fireflies.push(ff);
             }
             // Lamp posts along the ground
+            const numTiles = Math.ceil(levelW / 32) + 2;
             for (let i = 0; i < Math.floor(levelW / 400); i++) {
-                const lx = 200 + i * 400;
+                let targetTileIdx = Math.floor((200 + i * 400) / 32);
+                
+                // Find nearest non-gap tile
+                let actualTileIdx = targetTileIdx;
+                let offset = 0;
+                while (offset < 10) {
+                    const checkLeft = targetTileIdx - offset;
+                    const checkRight = targetTileIdx + offset;
+                    
+                    if (checkLeft > 2 && !this.gaps.includes(checkLeft) && !this.gaps.includes(checkLeft - 1) && !this.gaps.includes(checkLeft + 1)) {
+                        actualTileIdx = checkLeft;
+                        break;
+                    }
+                    if (checkRight < numTiles - 2 && !this.gaps.includes(checkRight) && !this.gaps.includes(checkRight - 1) && !this.gaps.includes(checkRight + 1)) {
+                        actualTileIdx = checkRight;
+                        break;
+                    }
+                    offset++;
+                }
+                
+                let lx = actualTileIdx * 32 + 16;
+
                 const pole = this.add.rectangle(lx, 490, 4, 80, 0x555555);
                 pole.setScrollFactor(1);
+                pole.setDepth(-7);
+
                 const lamp = this.add.circle(lx, 450, 6, 0xFFD700, 0.5);
                 lamp.setScrollFactor(1);
+                lamp.setDepth(-7);
+
                 const glow = this.add.circle(lx, 452, 20, 0xFFD700, 0.1);
                 glow.setScrollFactor(1);
+                glow.setDepth(-7);
             }
         }
     }
@@ -305,6 +349,14 @@ class GameScene extends Phaser.Scene {
             const flowerTypes = ['flower_daisy', 'flower_tulip', 'flower_sunflower', 'flower_rose'];
             for (let i = 0; i < 60; i++) {
                 const fx = Phaser.Math.Between(50, levelW - 50);
+
+                // Skip if this fx is near a gap
+                const tileIdx = Math.floor(fx / 32);
+                const isNearGap = [tileIdx - 1, tileIdx, tileIdx + 1].some(t => this.gaps.includes(t));
+                if (isNearGap) {
+                    continue;
+                }
+
                 const fType = flowerTypes[i % 4];
                 const flower = this.add.image(fx, 548, fType);
                 flower.setScale(Phaser.Math.FloatBetween(2, 3.5));
@@ -317,6 +369,14 @@ class GameScene extends Phaser.Scene {
             const flowerTypes = ['flower_rose', 'flower_daisy'];
             for (let i = 0; i < 25; i++) {
                 const fx = Phaser.Math.Between(50, levelW - 50);
+
+                // Skip if fx is near a gap
+                const tileIdx = Math.floor(fx / 32);
+                const isNearGap = [tileIdx - 1, tileIdx, tileIdx + 1].some(t => this.gaps.includes(t));
+                if (isNearGap) {
+                    continue;
+                }
+
                 const fType = flowerTypes[i % 2];
                 const flower = this.add.image(fx, 548, fType);
                 flower.setScale(Phaser.Math.FloatBetween(1.5, 2.5));
@@ -382,43 +442,33 @@ class GameScene extends Phaser.Scene {
         const tileKey = this.isWorld1 ? 'ground_spring' : 'ground_park';
         const numTiles = Math.ceil(levelW / 32) + 2;
 
-        // Fill the bottom of the screen with dirt/stone color so background doesn't show
-        const dirtColor = this.isWorld1 ? 0x8D6E3F : 0x616161;
+        const dirtColor = this.isWorld1 ? 0x8D6E3F : 0x201a30;
         const dirtFill = this.add.graphics();
         dirtFill.fillStyle(dirtColor, 1);
-        dirtFill.fillRect(0, 548, levelW, 52); // Fill from ground top to bottom of screen
         dirtFill.setScrollFactor(1);
-        dirtFill.setDepth(0);
-
-        // Create gaps in certain levels for challenge
-        const gaps = [];
-        if (this.levelIdx >= 2) {
-            // Add 1-2 gaps starting from level 3
-            const numGaps = Math.min(this.levelIdx - 1, 3);
-            for (let g = 0; g < numGaps; g++) {
-                gaps.push(Phaser.Math.Between(8 + g * 10, 12 + g * 10));
-            }
-        }
+        dirtFill.setDepth(-5); // Draw below ground tiles, but above background
 
         for (let i = 0; i < numTiles; i++) {
-            const isGap = gaps.includes(i) || gaps.includes(i - 1);
+            const isGap = this.gaps.includes(i) || this.gaps.includes(i - 1);
             if (isGap) {
-                // Clear dirt fill at gap positions so player can fall through
-                const gapFill = this.add.graphics();
-                gapFill.fillStyle(0x000000, 0); // Transparent
-                gapFill.setScrollFactor(1);
-                // Draw a dark pit visual at gap
+                // For gaps, draw a black pit rectangle to give a dark depth effect
                 const pitG = this.add.graphics();
                 pitG.fillStyle(0x000000, 1);
-                pitG.fillRect(i * 32, 548, 32, 52);
+                pitG.fillRect(i * 32, 548, 32, 100); // Taller fill down to 650 (off-screen)
                 pitG.setScrollFactor(1);
-                pitG.setDepth(0);
+                pitG.setDepth(-6); // Below ground/dirt fill, but above background
                 continue;
             }
+
+            // Draw the dirt fill for this tile column, starting at Y = 548 down to 650
+            dirtFill.fillRect(i * 32, 548, 32, 100);
+
+            // Create the ground tile
             const tile = this.platforms.create(i * 32, 564, tileKey);
             tile.setScale(2);
             tile.refreshBody();
             tile.body.setSize(32, 32);
+            tile.setDepth(0); // Explicit depth
         }
     }
 
@@ -576,8 +626,8 @@ class GameScene extends Phaser.Scene {
         const worldName = this.isWorld1 ? '🌸 Primavera' : '🌳 Parque';
         const levelNum = this.levelIdx + 1;
 
-        // Semi-transparent UI bar
-        const uiBg = this.add.rectangle(400, 22, 800, 44, 0x000000, 0.4);
+        // Semi-transparent UI bar (taller to fit subtitle)
+        const uiBg = this.add.rectangle(400, 27, 800, 54, 0x000000, 0.4);
         uiBg.setScrollFactor(0);
 
         this.scoreText = this.add.text(16, 10, '❤️ ' + this.score, {
@@ -589,20 +639,20 @@ class GameScene extends Phaser.Scene {
             fontSize: '18px', fill: '#FFD700', fontFamily: 'Arial', fontStyle: 'bold'
         }).setOrigin(0.5, 0).setScrollFactor(0);
 
-        // Lives display
+        // Lives display (aligned inside UI bar)
         for (let i = 0; i < this.lives; i++) {
-            const lifeIcon = this.add.image(750 - i * 25, 22, 'heart');
+            const lifeIcon = this.add.image(750 - i * 25, 20, 'heart');
             lifeIcon.setScale(2.5);
             lifeIcon.setScrollFactor(0);
         }
 
-        // Level name subtitle
-        this.add.text(400, 560, '"' + this.levelData.name + '"', {
-            fontSize: '14px', fill: '#FFFFFF', fontFamily: 'Arial', fontStyle: 'italic'
-        }).setOrigin(0.5, 0).setScrollFactor(0).setAlpha(0.6);
+        // Level name subtitle (inside top UI bar)
+        this.add.text(400, 36, '"' + this.levelData.name + '"', {
+            fontSize: '12px', fill: '#E0E0E0', fontFamily: 'Arial', fontStyle: 'italic'
+        }).setOrigin(0.5, 0).setScrollFactor(0).setAlpha(0.8);
 
-        // ===== SQUIRREL POWER HUD (hidden until activated) =====
-        this.squirrelHUD = this.add.container(16, 52).setScrollFactor(0).setVisible(false).setDepth(10);
+        // ===== SQUIRREL POWER HUD (hidden until activated, shifted down for taller UI) =====
+        this.squirrelHUD = this.add.container(16, 62).setScrollFactor(0).setVisible(false).setDepth(10);
         // Icon
         const sqIcon = this.add.image(7, 7, 'squirrel_icon').setScale(2);
         // Label
@@ -822,6 +872,20 @@ class GameScene extends Phaser.Scene {
                 if (enemy.cupcakeTimer <= 0) {
                     enemy.cupcakeTimer = Phaser.Math.Between(3000, 4500); // 3 to 4.5 seconds
                     this.throwCupcake(enemy);
+                }
+            }
+
+            // Edge detection: check if there is a gap ahead (only applies to enemies on the ground)
+            if (enemy.y > 500) {
+                const nextX = enemy.x + (enemy.direction * 20); // Look 20 pixels ahead
+                const tileIdx = Math.floor(nextX / 32);
+                const isGapAhead = this.gaps.includes(tileIdx) || this.gaps.includes(tileIdx - 1);
+                
+                if (isGapAhead) {
+                    // Turn around!
+                    enemy.direction *= -1;
+                    enemy.setVelocityX(enemy.direction * (60 + this.levelIdx * 5));
+                    enemy.setFlipX(enemy.direction === -1);
                 }
             }
 

@@ -20,7 +20,7 @@ class BootScene extends Phaser.Scene {
         this.generateAllSprites();
 
         // Initialize game state
-        this.registry.set('currentLevel', 4);
+        this.registry.set('currentLevel', 1);
         this.registry.set('score', 0);
         this.registry.set('lives', 3);
 
