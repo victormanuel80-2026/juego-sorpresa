@@ -1,16 +1,270 @@
-body {
+/* Styling the Love-Boy SP Retro Handheld Emulator */
+html, body {
     margin: 0;
     padding: 0;
-    background-color: #1a1a2e; /* Un fondo elegante oscuro */
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, #2e1a47 0%, #0f0a1c 100%);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+#console-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    max-height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+#console-body {
+    background: linear-gradient(135deg, #ff758f 0%, #ff7eb3 100%);
+    border-radius: 24px;
+    padding: 20px 20px 15px 20px;
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.6),
+        inset 0 4px 6px rgba(255, 255, 255, 0.4),
+        inset 0 -4px 6px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 840px; /* Game width 800 + padding */
+    max-width: 95vw;
+    position: relative;
+    border: 4px solid #ff4d6d;
+}
+
+/* Screen frame styling like a retro console */
+#screen-frame {
+    background-color: #222;
+    border-radius: 12px;
+    padding: 15px 15px 10px 15px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.9);
+    width: calc(100% - 30px);
+    display: flex;
+    justify-content: center;
+    position: relative;
+    border: 3px solid #333;
+}
+
+#power-led {
+    position: absolute;
+    left: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #555;
+    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+}
+#power-led.led-on {
+    background-color: #39ff14;
+    box-shadow: 0 0 8px #39ff14, 0 0 15px #39ff14;
 }
 
 #game-container {
-    box-shadow: 0 0 20px rgba(0,0,0,0.8);
+    background-color: #000;
+    width: 800px;
+    height: 600px;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 4/3;
     border-radius: 4px;
     overflow: hidden;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+}
+
+#game-container canvas {
+    display: block;
+    width: 100% !important;
+    height: auto !important;
+}
+
+/* Gamepad Controls */
+#gamepad {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+
+/* D-Pad controls */
+#dpad {
+    display: flex;
+    gap: 12px;
+}
+
+.gamepad-btn {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.05s, box-shadow 0.05s;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+.dpad-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #444 0%, #222 100%);
+    color: #fff;
+    font-size: 24px;
+    box-shadow: 
+        0 4px 0px #111,
+        0 6px 10px rgba(0,0,0,0.4);
+    border: 2px solid #555;
+}
+.dpad-btn.pressed, .dpad-btn:active {
+    transform: translateY(3px);
+    box-shadow: 
+        0 1px 0px #111,
+        0 2px 5px rgba(0,0,0,0.4);
+}
+
+/* Center menu buttons (SELECT / START) */
+#menu-buttons {
+    display: flex;
+    gap: 20px;
+}
+
+.menu-btn-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #ff4d6d;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.4);
+}
+
+.menu-btn {
+    width: 45px;
+    height: 12px;
+    border-radius: 6px;
+    background: linear-gradient(to bottom, #777, #555);
+    border: 1px solid #444;
+    box-shadow: 
+        0 2px 0px #333,
+        0 3px 5px rgba(0,0,0,0.3);
+    cursor: pointer;
+    outline: none;
+    margin-bottom: 4px;
+}
+.menu-btn:active {
+    transform: translateY(1px);
+    box-shadow: 
+        0 1px 0px #333,
+        0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Action A / B Buttons */
+#action-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.action-btn-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.action-btn {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 20px;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    box-shadow: 
+        0 4px 0px #8b0000,
+        0 6px 10px rgba(0,0,0,0.4);
+    border: 2px solid #ff4d6d;
+}
+
+.a-btn {
+    background: linear-gradient(135deg, #d90429 0%, #ef233c 100%);
+}
+
+.b-btn {
+    background: linear-gradient(135deg, #ba181b 0%, #e5383b 100%);
+}
+
+.action-btn.pressed, .action-btn:active {
+    transform: translateY(3px);
+    box-shadow: 
+        0 1px 0px #8b0000,
+        0 2px 5px rgba(0,0,0,0.4);
+}
+
+/* Console Logo */
+#console-logo {
+    margin-top: 10px;
+    font-family: 'Impact', Charcoal, sans-serif;
+    font-size: 18px;
+    color: #ff4d6d;
+    letter-spacing: 2px;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.4);
+}
+#console-logo span {
+    color: #fff;
+    background-color: #ff4d6d;
+    padding: 1px 4px;
+    border-radius: 4px;
+    font-size: 12px;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 860px) {
+    #console-body {
+        width: 100%;
+        padding: 10px 10px 10px 10px;
+        border-radius: 16px;
+    }
+    #screen-frame {
+        padding: 5px 5px 5px 5px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    #power-led {
+        display: none;
+    }
+    #gamepad {
+        margin-top: 15px;
+        padding: 0 5px;
+    }
+    .dpad-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+    .action-btn {
+        width: 46px;
+        height: 46px;
+        font-size: 16px;
+    }
+    .menu-btn {
+        width: 35px;
+        height: 10px;
+    }
 }

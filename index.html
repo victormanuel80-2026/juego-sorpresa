@@ -2,19 +2,125 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Ti</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Para Ti ❤️</title>
     <link rel="stylesheet" href="css/style.css">
     <!-- Cargar Phaser 3 desde CDN -->
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
 </head>
 <body>
-    <div id="game-container"></div>
+    <!-- Global controls state -->
+    <script>
+        window.mobileControls = { left: false, right: false, up: false };
+    </script>
+
+    <!-- Retro Handheld Console Container -->
+    <div id="console-wrapper">
+        <div id="console-body">
+            <!-- Console Screen Frame -->
+            <div id="screen-frame">
+                <!-- Status LED -->
+                <div id="power-led" class="led-on"></div>
+                <!-- Game Canvas Parent -->
+                <div id="game-container"></div>
+            </div>
+
+            <!-- Handheld Controls (Gamepad) -->
+            <div id="gamepad">
+                <!-- D-Pad (Left/Right) -->
+                <div id="dpad">
+                    <button id="btn-left" class="gamepad-btn dpad-btn" title="Mover Izquierda">◀</button>
+                    <button id="btn-right" class="gamepad-btn dpad-btn" title="Mover Derecha">▶</button>
+                </div>
+
+                <!-- Center Menu Buttons -->
+                <div id="menu-buttons">
+                    <div class="menu-btn-wrap">
+                        <button id="btn-select" class="menu-btn"></button>
+                        <span>SELECT</span>
+                    </div>
+                    <div class="menu-btn-wrap">
+                        <button id="btn-start" class="menu-btn"></button>
+                        <span>START</span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons (A/B) -->
+                <div id="action-buttons">
+                    <div class="action-btn-wrap">
+                        <button id="btn-b" class="gamepad-btn action-btn b-btn" title="Saltar">B</button>
+                    </div>
+                    <div class="action-btn-wrap">
+                        <button id="btn-a" class="gamepad-btn action-btn a-btn" title="Saltar">A</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Logo/Subtext -->
+            <div id="console-logo">
+                LOVE-BOY <span>SP</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Cargar Escenas -->
     <script src="js/scenes/BootScene.js"></script>
     <script src="js/scenes/GameScene.js"></script>
     <script src="js/scenes/CardScene.js"></script>
     <!-- Cargar Main Script -->
     <script src="js/main.js"></script>
+
+    <!-- Wire up Touch Events for Gamepad -->
+    <script>
+        const leftBtn = document.getElementById('btn-left');
+        const rightBtn = document.getElementById('btn-right');
+        const aBtn = document.getElementById('btn-a');
+        const bBtn = document.getElementById('btn-b');
+        const startBtn = document.getElementById('btn-start');
+
+        // Prevent default zoom/scrolling on buttons
+        const preventDefault = (e) => {
+            if (e.cancelable) e.preventDefault();
+        };
+
+        const setupButton = (btn, controlKey) => {
+            const press = (e) => {
+                preventDefault(e);
+                window.mobileControls[controlKey] = true;
+                btn.classList.add('pressed');
+            };
+            const release = (e) => {
+                preventDefault(e);
+                window.mobileControls[controlKey] = false;
+                btn.classList.remove('pressed');
+            };
+
+            // Touch events
+            btn.addEventListener('touchstart', press, { passive: false });
+            btn.addEventListener('touchend', release, { passive: false });
+            btn.addEventListener('touchcancel', release, { passive: false });
+
+            // Mouse events
+            btn.addEventListener('mousedown', press);
+            btn.addEventListener('mouseup', release);
+            btn.addEventListener('mouseleave', release);
+        };
+
+        setupButton(leftBtn, 'left');
+        setupButton(rightBtn, 'right');
+        setupButton(aBtn, 'up');
+        setupButton(bBtn, 'up'); // Both A and B can jump for easy accessibility
+
+        // Reset/Restart level if START is pressed
+        startBtn.addEventListener('click', () => {
+            // Restart the active scene
+            if (window.game && window.game.scene) {
+                const gameScene = window.game.scene.getScene('GameScene');
+                if (gameScene && gameScene.scene.isActive()) {
+                    gameScene.scene.restart();
+                }
+            }
+        });
+    </script>
 </body>
 </html>

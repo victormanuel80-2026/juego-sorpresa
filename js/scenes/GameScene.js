@@ -477,9 +477,9 @@ class GameScene extends Phaser.Scene {
         const onGround = this.player.body.touching.down || this.player.body.blocked.down;
 
         // Movement
-        const left = this.cursors.left.isDown || this.wasd.left.isDown;
-        const right = this.cursors.right.isDown || this.wasd.right.isDown;
-        const jump = this.cursors.up.isDown || this.wasd.up.isDown || this.wasd.space.isDown;
+        const left = this.cursors.left.isDown || this.wasd.left.isDown || (window.mobileControls && window.mobileControls.left);
+        const right = this.cursors.right.isDown || this.wasd.right.isDown || (window.mobileControls && window.mobileControls.right);
+        const jump = this.cursors.up.isDown || this.wasd.up.isDown || this.wasd.space.isDown || (window.mobileControls && window.mobileControls.up);
 
         if (left) {
             this.player.setVelocityX(-220);
