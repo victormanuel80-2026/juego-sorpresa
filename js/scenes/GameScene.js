@@ -524,16 +524,17 @@ class GameScene extends Phaser.Scene {
                 enemy.setFlipX(false);
             }
 
-            // Walking animation for Balloon Boy
-            if (enemy.enemyType === 'balloonboy') {
-                enemy.walkTimer += delta;
-                if (enemy.walkTimer > 300) { // Toggle every 300ms
-                    enemy.walkTimer = 0;
-                    enemy.walkFrame = enemy.walkFrame === 0 ? 1 : 0;
-                    enemy.setTexture(enemy.walkFrame === 0 ? 'balloonboy' : 'balloonboy_walk');
-                }
+            // Walking animation for all animatronics
+            enemy.walkTimer += delta;
+            if (enemy.walkTimer > 300) { // Toggle every 300ms
+                enemy.walkTimer = 0;
+                enemy.walkFrame = enemy.walkFrame === 0 ? 1 : 0;
+                const baseTexture = enemy.enemyType;
+                enemy.setTexture(enemy.walkFrame === 0 ? baseTexture : baseTexture + '_walk');
+            }
 
-                // Shoot balloons!
+            // Shoot balloons if Balloon Boy
+            if (enemy.enemyType === 'balloonboy') {
                 enemy.balloonTimer -= delta;
                 if (enemy.balloonTimer <= 0) {
                     enemy.balloonTimer = Phaser.Math.Between(2500, 4500); // Shoot every 2.5 to 4.5 seconds

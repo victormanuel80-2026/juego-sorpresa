@@ -20,7 +20,7 @@ class BootScene extends Phaser.Scene {
         this.generateAllSprites();
 
         // Initialize game state
-        this.registry.set('currentLevel', 1);
+        this.registry.set('currentLevel', 4);
         this.registry.set('score', 0);
         this.registry.set('lives', 3);
 
@@ -56,9 +56,13 @@ class BootScene extends Phaser.Scene {
         this.genPlayerJump();
         this.genPlayerWalk();
         this.genFreddy();
+        this.genFreddyWalk();
         this.genBonnie();
+        this.genBonnieWalk();
         this.genChica();
+        this.genChicaWalk();
         this.genFoxy();
+        this.genFoxyWalk();
         this.genBalloonBoy();
         this.genBalloonBoyWalk();
         this.genHeart();
@@ -206,33 +210,75 @@ class BootScene extends Phaser.Scene {
     // ==================== FREDDY ====================
     genFreddy() {
         const pal = {
-            'B':'#8B4513','b':'#A0522D','H':'#1a1a1a',
-            'h':'#333333','E':'#4169E1','e':'#87CEEB',
-            'N':'#1a1a1a','M':'#2F1A0E','T':'#FF0000',
-            'W':'#FFFFFF','S':'#D2691E'
+            'B':'#8B4513','b':'#A0522D','H':'#000000',
+            'S':'#D2691E','E':'#00b4d8','W':'#FFFFFF',
+            'G':'#555555','N':'#000000'
         };
         const rows = [
-            '...HHHHHH....',
-            '..HHHHHHHH...',
-            '..HhHHHHhH...',
-            '.BB.BBBB.BB..',
-            '.BBBBBBBBBB..',
-            '.BBBBBBBBBB..',
-            '.BBeEBBeEBB..',
-            '.BBWEWBWEWB..',
-            '..BBBNBBBB...',
-            '..BBBBBBB....',
-            '..BBMMMBB....',
-            '..BBBBBBB....',
-            '...TTTTT.....',
-            '..SSSSSSS....',
-            '..SSSSSSS....',
-            '..SSSSSSS....',
-            '..SS...SS....',
-            '..SS...SS....',
-            '..BB...BB....',
+            '....HHHHHH....',
+            '....HHHHHH....',
+            '...HHHHHHHH...',
+            '..BBHHHHHHBB..',
+            '.BBBbHHHHbBBB.',
+            '.BBBBBBBBBBBB.',
+            '.BBbEbBBbEbBB.',
+            '.BBWEWBBWEWBB.',
+            '..BBSSNBSSBB..',
+            '..BSSSSSSSBB..',
+            '...BWWWWWB....',
+            '....BBBBB.....',
+            '....HHHHHH....',
+            '..BBBBBBBBBB..',
+            '..BBSSSSSSBB..',
+            '..BBSSSSSSBB..',
+            '..BBSSSSSSBB..',
+            '...BBBBBBBB...',
+            '....GG..GG....',
+            '....BB..BB....',
+            '....BB..BB....',
+            '....GG..GG....',
+            '...BBB..BBB...',
+            '...BBB..BBB...',
         ];
-        const c = this.textures.createCanvas('freddy', 13, 19);
+        const c = this.textures.createCanvas('freddy', 14, 24);
+        const ctx = c.getContext();
+        this.drawMap(ctx, pal, rows, 0, 0);
+        c.refresh();
+    }
+
+    genFreddyWalk() {
+        const pal = {
+            'B':'#8B4513','b':'#A0522D','H':'#000000',
+            'S':'#D2691E','E':'#00b4d8','W':'#FFFFFF',
+            'G':'#555555','N':'#000000'
+        };
+        const rows = [
+            '....HHHHHH....',
+            '....HHHHHH....',
+            '...HHHHHHHH...',
+            '..BBHHHHHHBB..',
+            '.BBBbHHHHbBBB.',
+            '.BBBBBBBBBBBB.',
+            '.BBbEbBBbEbBB.',
+            '.BBWEWBBWEWBB.',
+            '..BBSSNBSSBB..',
+            '..BSSSSSSSBB..',
+            '...BWWWWWB....',
+            '....BBBBB.....',
+            '....HHHHHH....',
+            '..BBBBBBBBBB..',
+            '..BBSSSSSSBB..',
+            '..BBSSSSSSBB..',
+            '..BBSSSSSSBB..',
+            '...BBBBBBBB...',
+            '....GG..GG....',
+            '...BB....BB...',
+            '...BB....BB...',
+            '..GG......GG..',
+            '.BBB......BBB.',
+            '.BBB......BBB.',
+        ];
+        const c = this.textures.createCanvas('freddy_walk', 14, 24);
         const ctx = c.getContext();
         this.drawMap(ctx, pal, rows, 0, 0);
         c.refresh();
@@ -241,32 +287,77 @@ class BootScene extends Phaser.Scene {
     // ==================== BONNIE ====================
     genBonnie() {
         const pal = {
-            'P':'#6A0DAD','p':'#8B3FCF','E':'#FF0000',
-            'e':'#FF6666','W':'#FFFFFF','N':'#2C0550',
-            'M':'#1a1a1a','T':'#FF0000','S':'#7B2FBF',
-            'R':'#FF3333'
+            'P':'#6f42c1','p':'#8c52ff','S':'#d8b4f8',
+            'E':'#39ff14','W':'#FFFFFF','H':'#1a1a1a',
+            'R':'#d90429','G':'#777777','N':'#1a1a1a'
         };
         const rows = [
-            '.PP...PP.....',
-            '.PP...PP.....',
-            '.PP...PP.....',
-            '.PPPPPPP.....',
-            '.PPPPPPP.....',
-            '.PPpPpPPP....',
-            '.PWERPPWER...',
-            '.PPPPPPPP....',
-            '..PPNPPP.....',
-            '..PPMPP......',
-            '..PPPPP......',
-            '...TTT.......',
-            '..SSSSS......',
-            '..SSSSS......',
-            '..SSSSS......',
-            '..SS.SS......',
-            '..SS.SS......',
-            '..PP.PP......',
+            '..PP......PP..',
+            '..PP......PP..',
+            '..PS......SP..',
+            '..PS......SP..',
+            '..PP......PP..',
+            '..PP......PP..',
+            '..PPPPPPPPPP..',
+            '.PPpEpPPpEpPP.',
+            '.PPWEWPPWEWPP.',
+            '..PPSSNBSSPP..',
+            '..PSSSSSSSss..',
+            '...PWWWWWP....',
+            '....PPPPP.....',
+            '....RRRRRR....',
+            '..PPPPPPPPPP..',
+            '..PPSSSSSSPP..',
+            '..PPSSSSSSPP..',
+            '..PPSSSSSSPP..',
+            '...PPPPPPPP...',
+            '....GG..GG....',
+            '....PP..PP....',
+            '....PP..PP....',
+            '....GG..GG....',
+            '...PPP..PPP...',
+            '...PPP..PPP...',
         ];
-        const c = this.textures.createCanvas('bonnie', 13, 18);
+        const c = this.textures.createCanvas('bonnie', 14, 25);
+        const ctx = c.getContext();
+        this.drawMap(ctx, pal, rows, 0, 0);
+        c.refresh();
+    }
+
+    genBonnieWalk() {
+        const pal = {
+            'P':'#6f42c1','p':'#8c52ff','S':'#d8b4f8',
+            'E':'#39ff14','W':'#FFFFFF','H':'#1a1a1a',
+            'R':'#d90429','G':'#777777','N':'#1a1a1a'
+        };
+        const rows = [
+            '..PP......PP..',
+            '..PP......PP..',
+            '..PS......SP..',
+            '..PS......SP..',
+            '..PP......PP..',
+            '..PP......PP..',
+            '..PPPPPPPPPP..',
+            '.PPpEpPPpEpPP.',
+            '.PPWEWPPWEWPP.',
+            '..PPSSNBSSPP..',
+            '..PSSSSSSSss..',
+            '...PWWWWWP....',
+            '....PPPPP.....',
+            '....RRRRRR....',
+            '..PPPPPPPPPP..',
+            '..PPSSSSSSPP..',
+            '..PPSSSSSSPP..',
+            '..PPSSSSSSPP..',
+            '...PPPPPPPP...',
+            '....GG..GG....',
+            '...PP....PP...',
+            '...PP....PP...',
+            '..GG......GG..',
+            '.PPP......PPP.',
+            '.PPP......PPP.',
+        ];
+        const c = this.textures.createCanvas('bonnie_walk', 14, 25);
         const ctx = c.getContext();
         this.drawMap(ctx, pal, rows, 0, 0);
         c.refresh();
@@ -275,31 +366,103 @@ class BootScene extends Phaser.Scene {
     // ==================== CHICA ====================
     genChica() {
         const pal = {
-            'Y':'#FFD700','y':'#FFA500','E':'#9932CC',
-            'e':'#BA55D3','W':'#FFFFFF','N':'#FF8C00',
-            'M':'#FF6347','B':'#FFFFFF','b':'#4169E1',
-            'S':'#FFD700','L':'#FF8C00'
+            'Y': '#ffd166', // Amarillo Toy Chica
+            'y': '#ffb703', // Amarillo sombra
+            'P': '#ff007f', // Rosa fuerte (mejillas y shorts)
+            'p': '#ffb6c1', // Rosa claro (confeti / bib shadow)
+            'O': '#fb8500', // Naranja (dedos del signo de paz y pies)
+            'W': '#FFFFFF', // Blanco (babero, ojos y dientes)
+            'w': '#dddddd', // Blanco sombra
+            'K': '#1a1a1a', // Negro (ojos, boca)
+            'G': '#888888', // Gris (cuello endo)
+            'C': '#00E676', // Verde confeti
+            'B': '#2979FF'  // Azul confeti
         };
         const rows = [
-            '...YYYYY.....',
-            '..YYYYYYY....',
-            '..YYYYYYY....',
-            '..YYeYeYY....',
-            '..YWEWWEW....',
-            '..YYNYNNY....',
-            '...YMMMY.....',
-            '...YYYYY.....',
-            '..BBbBbBB....',
-            '..BBBBBBB....',
-            '..BBbBbBB....',
-            '..YYYYYYY....',
-            '..YYYYYYY....',
-            '..YYYYYYY....',
-            '..YY..YY.....',
-            '..YY..YY.....',
-            '..LL..LL.....',
+            ".........Y..Y..........",
+            "........Y.YY.Y.........",
+            ".........YYY...........",
+            "......YYYYYYYYYY.......",
+            "O.O..YYYYYYYYYYYY..O.O.",
+            "O.O.YYYYYYYYYYYYYY.O.O.",
+            "OOO.YYYKKKKKKKKYYY.OOO.",
+            ".OO.YYKKWKKKKWKKYY..OO.",
+            ".YY.YYKKKKKKKKKKYY..YY.",
+            ".YY.YPPKKKKKKKKPPY..YY.",
+            ".YY.YPPKKKKKKKKPPY..YY.",
+            "..Y.YYYKKWWWWKKYYY..Y..",
+            "..Y..YYKKKKKKKKYY..Y...",
+            ".....YYYYYYYYYYYY......",
+            "........GGGG...........",
+            "......YYYYYYYYYY.......",
+            ".....YYYYYYYYYYYY......",
+            ".....WWWWWWWWWWWW......",
+            ".....WpWpWBWpWpWW......",
+            ".....WPPWPPWPPWCW......",
+            "......WPPWPPWPPW.......",
+            ".......YYYYYYYY........",
+            "........YYYYYY.........",
+            "......PPPPPPPPPP.......",
+            ".....PPPPPPPPPPPP......",
+            "....YYYYYYYYYYYYYY.....",
+            "....YYYY......YYYY.....",
+            "....GGGG......GGGG.....",
+            "....YYYY......YYYY.....",
+            "...OOOOO......OOOOO...."
         ];
-        const c = this.textures.createCanvas('chica', 13, 17);
+        const c = this.textures.createCanvas('chica', 23, 30);
+        const ctx = c.getContext();
+        this.drawMap(ctx, pal, rows, 0, 0);
+        c.refresh();
+    }
+
+    genChicaWalk() {
+        const pal = {
+            'Y': '#ffd166', // Amarillo Toy Chica
+            'y': '#ffb703', // Amarillo sombra
+            'P': '#ff007f', // Rosa fuerte (mejillas y shorts)
+            'p': '#ffb6c1', // Rosa claro (confeti / bib shadow)
+            'O': '#fb8500', // Naranja (dedos del signo de paz y pies)
+            'W': '#FFFFFF', // Blanco (babero, ojos y dientes)
+            'w': '#dddddd', // Blanco sombra
+            'K': '#1a1a1a', // Negro (ojos, boca)
+            'G': '#888888', // Gris (cuello endo)
+            'C': '#00E676', // Verde confeti
+            'B': '#2979FF'  // Azul confeti
+        };
+        const rows = [
+            ".......................",
+            ".........Y..Y..........",
+            "........Y.YY.Y.........",
+            ".........YYY...........",
+            "......YYYYYYYYYY.......",
+            "O.O..YYYYYYYYYYYY..O.O.",
+            "O.O.YYYYYYYYYYYYYY.O.O.",
+            "OOO.YYYKKKKKKKKYYY.OOO.",
+            ".OO.YYKKWKKKKWKKYY..OO.",
+            ".YY.YYKKKKKKKKKKYY..YY.",
+            ".YY.YPPKKKKKKKKPPY..YY.",
+            ".YY.YPPKKKKKKKKPPY..YY.",
+            "..Y.YYYKKWWWWKKYYY..Y..",
+            "..Y..YYKKKKKKKKYY..Y...",
+            ".....YYYYYYYYYYYY......",
+            "........GGGG...........",
+            "......YYYYYYYYYY.......",
+            ".....YYYYYYYYYYYY......",
+            ".....WWWWWWWWWWWW......",
+            ".....WpWpWBWpWpWW......",
+            ".....WPPWPPWPPWCW......",
+            "......WPPWPPWPPW.......",
+            ".......YYYYYYYY........",
+            "........YYYYYY.........",
+            "......PPPPPPPPPP.......",
+            ".....PPPPPPPPPPPP......",
+            "....YYYYYYYYYYYYYY.....",
+            "..YYYY..........YYYY...",
+            "..GGGG..........GGGG...",
+            ".OOOOO..........OOOOO.."
+        ];
+        const c = this.textures.createCanvas('chica_walk', 23, 30);
         const ctx = c.getContext();
         this.drawMap(ctx, pal, rows, 0, 0);
         c.refresh();
@@ -308,30 +471,75 @@ class BootScene extends Phaser.Scene {
     // ==================== FOXY ====================
     genFoxy() {
         const pal = {
-            'R':'#CC3300','r':'#FF4500','E':'#FFD700',
-            'e':'#FFFF00','W':'#FFFFFF','N':'#1a1a1a',
-            'M':'#1a1a1a','P':'#1a1a1a','H':'#8B0000',
-            'S':'#CC3300','K':'#808080','T':'#B22222'
+            'R':'#d90429','r':'#ef233c','E':'#ffea00',
+            'W':'#FFFFFF','H':'#1a1a1a','B':'#6c584c',
+            'G':'#aaaaaa','K':'#555555'
         };
         const rows = [
-            '..RR...RR....',
-            '..RRR.RRR....',
-            '..RRRRRRR....',
-            '..RRRRRRR....',
-            '..RPRNRER....',
-            '..RNNRNWR....',
-            '...RRNRR.....',
-            '...RMMMR.....',
-            '...RRRRR.....',
-            '..TTTTTTT....',
-            '..SSSSSSS....',
-            '..SSSKSSS....',
-            '..SSSSSSS....',
-            '..SS...SS....',
-            '..SS...SS....',
-            '..RR...RR....',
+            '..RR......RR..',
+            '..RR......RR..',
+            '..RRRRRRRRRR..',
+            '.RRHHRRrrERRR.',
+            '.RRHHRRWWERRR.',
+            '..RRRRRRRRRR..',
+            '...RRRRRRRR...',
+            '....RWWWR.....',
+            '.....RRR......',
+            '..RRRRRRRRRR..',
+            '.KRRGGGGGGKK..',
+            'GRRGGGGGGK..G.',
+            '..RRRRRRRR....',
+            '..BBBBBBBBBB..',
+            '..BBBBBBBBBB..',
+            '..BBBBBBBBBB..',
+            '...BBBBBBBB...',
+            '....GG..GG....',
+            '....GG..GG....',
+            '....GG..GG....',
+            '....GG..GG....',
+            '....GG..GG....',
+            '....KK..KK....',
+            '....KK..KK....',
         ];
-        const c = this.textures.createCanvas('foxy', 13, 16);
+        const c = this.textures.createCanvas('foxy', 14, 24);
+        const ctx = c.getContext();
+        this.drawMap(ctx, pal, rows, 0, 0);
+        c.refresh();
+    }
+
+    genFoxyWalk() {
+        const pal = {
+            'R':'#d90429','r':'#ef233c','E':'#ffea00',
+            'W':'#FFFFFF','H':'#1a1a1a','B':'#6c584c',
+            'G':'#aaaaaa','K':'#555555'
+        };
+        const rows = [
+            '..RR......RR..',
+            '..RR......RR..',
+            '..RRRRRRRRRR..',
+            '.RRHHRRrrERRR.',
+            '.RRHHRRWWERRR.',
+            '..RRRRRRRRRR..',
+            '...RRRRRRRR...',
+            '....RWWWR.....',
+            '.....RRR......',
+            '..RRRRRRRRRR..',
+            '.KRRGGGGGGKK..',
+            'GRRGGGGGGK..G.',
+            '..RRRRRRRR....',
+            '..BBBBBBBBBB..',
+            '..BBBBBBBBBB..',
+            '..BBBBBBBBBB..',
+            '...BBBBBBBB...',
+            '....GG..GG....',
+            '...GG....GG...',
+            '...GG....GG...',
+            '..GG......GG..',
+            '..GG......GG..',
+            '.KK........KK.',
+            '.KK........KK.',
+        ];
+        const c = this.textures.createCanvas('foxy_walk', 14, 24);
         const ctx = c.getContext();
         this.drawMap(ctx, pal, rows, 0, 0);
         c.refresh();
