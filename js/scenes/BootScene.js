@@ -80,6 +80,8 @@ class BootScene extends Phaser.Scene {
         this.genQBlock();
         this.genQBlockHit();
         this.genSquirrelIcon();
+        this.genPlayerSquirrel();
+        this.genPlayerSquirrelFly();
     }
 
     // ==================== QUESTION BLOCK ====================
@@ -89,24 +91,24 @@ class BootScene extends Phaser.Scene {
         const r = (x, y, w, h, col) => { ctx.fillStyle = col; ctx.fillRect(x, y, w, h); };
         // Outer dark gold border
         r(0, 0, 16, 16, '#7D5A00');
-        // Bright gold fill
+        // Bright gold fill (fully yellow - no black center)
         r(1, 1, 14, 14, '#FFD700');
-        // Highlight top/left
+        // Highlight top/left edge
         r(1, 1, 13, 1, '#FFE84D');
         r(1, 1, 1, 13, '#FFE84D');
-        // Shadow bottom/right
+        // Shadow bottom/right edge
         r(2, 14, 13, 1, '#B38600');
         r(14, 2, 1, 12, '#B38600');
-        // Black center background for ?
-        r(3, 3, 10, 10, '#1a1a1a');
-        // White ? symbol
-        r(5, 4, 4, 1, '#FFFFFF');  // top bar
-        r(4, 5, 1, 1, '#FFFFFF');  // left curve
-        r(8, 5, 1, 2, '#FFFFFF');  // right curve
-        r(7, 7, 1, 1, '#FFFFFF');  // elbow
-        r(7, 8, 1, 1, '#FFFFFF');  // stem top
-        // gap at 9
-        r(7, 10, 1, 1, '#FFFFFF'); // dot
+        // Inner amber square (gives depth like reference image)
+        r(3, 3, 10, 10, '#FFC200');
+        // Dark brown ? symbol on amber background
+        r(5, 4, 4, 1, '#5A3E00');  // top bar
+        r(4, 5, 1, 1, '#5A3E00');  // left curve
+        r(8, 5, 1, 1, '#5A3E00');  // right top
+        r(8, 6, 1, 1, '#5A3E00');  // right bottom
+        r(7, 7, 1, 1, '#5A3E00');  // elbow
+        r(7, 8, 1, 1, '#5A3E00');  // stem
+        r(7, 10, 2, 1, '#5A3E00'); // dot
         c.refresh();
     }
 
@@ -151,6 +153,79 @@ class BootScene extends Phaser.Scene {
         // Feet/legs
         r(4, 12, 2, 2, '#8B4513');
         r(8, 12, 2, 2, '#8B4513');
+        c.refresh();
+    }
+
+    // ==================== SQUIRREL PLAYER ====================
+    genPlayerSquirrel() {
+        const c = this.textures.createCanvas('player_squirrel', 16, 24);
+        const ctx = c.getContext();
+        const r = (x, y, w, h, col) => { ctx.fillStyle = col; ctx.fillRect(x, y, w, h); };
+        // === SQUIRREL EARS (round, brown) ===
+        r(3, 0, 2, 3, '#8B4513');  r(4, 1, 1, 1, '#C0724D');  // left ear
+        r(11, 0, 2, 3, '#8B4513'); r(11, 1, 1, 1, '#C0724D'); // right ear
+        // === HAIR ===
+        r(3, 1, 10, 3, '#5C3317'); r(2, 2, 12, 2, '#5C3317');
+        r(2, 4, 2, 7, '#5C3317');  r(12, 4, 2, 7, '#5C3317');
+        r(1, 4, 1, 5, '#5C3317');  r(14, 4, 1, 5, '#5C3317');
+        r(5, 2, 2, 1, '#7B4F2A');  r(9, 2, 2, 1, '#7B4F2A');
+        // === FACE ===
+        r(4, 4, 8, 7, '#FFDAB9'); r(5, 3, 6, 1, '#FFDAB9');
+        r(5, 6, 2, 2, '#2C1810'); r(9, 6, 2, 2, '#2C1810');
+        r(5, 6, 1, 1, '#FFFFFF'); r(9, 6, 1, 1, '#FFFFFF');
+        r(4, 8, 2, 1, '#FFB0B0'); r(10, 8, 2, 1, '#FFB0B0');
+        r(6, 9, 4, 1, '#E88088');
+        // === FLUFFY TAIL (right side) ===
+        r(14, 11, 2, 6, '#A0522D');
+        r(15, 10, 1, 8, '#C0724D');
+        r(15, 16, 1, 1, '#E8C090');
+        // === OUTFIT (orange/brown squirrel theme) ===
+        r(4, 11, 8, 3, '#D2691E'); r(3, 12, 10, 1, '#D2691E');
+        r(5, 11, 6, 1, '#E8A060'); r(7, 12, 2, 1, '#A04010');
+        r(3, 14, 10, 3, '#D2691E'); r(2, 15, 12, 2, '#D2691E');
+        r(3, 16, 10, 1, '#A04010');
+        // === LEGS & SHOES ===
+        r(5, 17, 2, 4, '#FFDAB9'); r(9, 17, 2, 4, '#FFDAB9');
+        r(4, 21, 3, 2, '#8B4513'); r(9, 21, 3, 2, '#8B4513');
+        r(4, 22, 3, 1, '#6B3A1F'); r(9, 22, 3, 1, '#6B3A1F');
+        // === ARMS ===
+        r(2, 12, 2, 4, '#FFDAB9'); r(12, 12, 2, 4, '#FFDAB9');
+        c.refresh();
+    }
+
+    genPlayerSquirrelFly() {
+        const c = this.textures.createCanvas('player_squirrel_fly', 16, 24);
+        const ctx = c.getContext();
+        const r = (x, y, w, h, col) => { ctx.fillStyle = col; ctx.fillRect(x, y, w, h); };
+        // === SQUIRREL EARS ===
+        r(3, 0, 2, 3, '#8B4513');  r(4, 1, 1, 1, '#C0724D');
+        r(11, 0, 2, 3, '#8B4513'); r(11, 1, 1, 1, '#C0724D');
+        // === HAIR (flowing up) ===
+        r(3, 1, 10, 3, '#5C3317'); r(2, 2, 12, 2, '#5C3317');
+        r(2, 4, 2, 6, '#5C3317');  r(12, 4, 2, 6, '#5C3317');
+        r(1, 3, 1, 4, '#5C3317');  r(14, 3, 1, 4, '#5C3317');
+        r(1, 1, 1, 3, '#5C3317');  r(14, 1, 1, 3, '#5C3317');
+        // === FACE (happy gliding) ===
+        r(4, 4, 8, 7, '#FFDAB9'); r(5, 3, 6, 1, '#FFDAB9');
+        r(5, 6, 2, 1, '#2C1810'); r(9, 6, 2, 1, '#2C1810');
+        r(5, 7, 1, 1, '#2C1810'); r(10, 7, 1, 1, '#2C1810');
+        r(4, 8, 2, 1, '#FFB0B0'); r(10, 8, 2, 1, '#FFB0B0');
+        r(6, 9, 4, 1, '#E88088'); r(7, 10, 2, 1, '#E88088');
+        // === TAIL (prominent when flying) ===
+        r(14, 9, 2, 7, '#A0522D');
+        r(15, 8, 1, 9, '#C0724D');
+        r(15, 16, 1, 1, '#E8C090');
+        // === OUTFIT ===
+        r(4, 11, 8, 3, '#D2691E'); r(5, 11, 6, 1, '#E8A060'); r(7, 12, 2, 1, '#A04010');
+        // Skirt flared while gliding
+        r(2, 14, 12, 3, '#D2691E'); r(1, 15, 14, 1, '#D2691E'); r(2, 16, 12, 1, '#A04010');
+        // === LEGS SPREAD ===
+        r(3, 17, 2, 4, '#FFDAB9'); r(11, 17, 2, 4, '#FFDAB9');
+        r(2, 21, 3, 2, '#8B4513'); r(11, 21, 3, 2, '#8B4513');
+        r(2, 22, 3, 1, '#6B3A1F'); r(11, 22, 3, 1, '#6B3A1F');
+        // === ARMS WIDE (gliding) ===
+        r(1, 11, 2, 4, '#FFDAB9'); r(13, 11, 2, 4, '#FFDAB9');
+        r(0, 12, 1, 3, '#D2691E'); r(15, 12, 1, 3, '#D2691E'); // glide membrane
         c.refresh();
     }
 
