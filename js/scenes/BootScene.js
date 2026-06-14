@@ -77,6 +77,81 @@ class BootScene extends Phaser.Scene {
         this.genFlowerSunflower();
         this.genFlowerRose();
         this.genBalloons();
+        this.genQBlock();
+        this.genQBlockHit();
+        this.genSquirrelIcon();
+    }
+
+    // ==================== QUESTION BLOCK ====================
+    genQBlock() {
+        const c = this.textures.createCanvas('qblock', 16, 16);
+        const ctx = c.getContext();
+        const r = (x, y, w, h, col) => { ctx.fillStyle = col; ctx.fillRect(x, y, w, h); };
+        // Outer dark gold border
+        r(0, 0, 16, 16, '#7D5A00');
+        // Bright gold fill
+        r(1, 1, 14, 14, '#FFD700');
+        // Highlight top/left
+        r(1, 1, 13, 1, '#FFE84D');
+        r(1, 1, 1, 13, '#FFE84D');
+        // Shadow bottom/right
+        r(2, 14, 13, 1, '#B38600');
+        r(14, 2, 1, 12, '#B38600');
+        // Black center background for ?
+        r(3, 3, 10, 10, '#1a1a1a');
+        // White ? symbol
+        r(5, 4, 4, 1, '#FFFFFF');  // top bar
+        r(4, 5, 1, 1, '#FFFFFF');  // left curve
+        r(8, 5, 1, 2, '#FFFFFF');  // right curve
+        r(7, 7, 1, 1, '#FFFFFF');  // elbow
+        r(7, 8, 1, 1, '#FFFFFF');  // stem top
+        // gap at 9
+        r(7, 10, 1, 1, '#FFFFFF'); // dot
+        c.refresh();
+    }
+
+    genQBlockHit() {
+        const c = this.textures.createCanvas('qblock_hit', 16, 16);
+        const ctx = c.getContext();
+        const r = (x, y, w, h, col) => { ctx.fillStyle = col; ctx.fillRect(x, y, w, h); };
+        // Grey used block
+        r(0, 0, 16, 16, '#555555');
+        r(1, 1, 14, 14, '#888888');
+        r(1, 1, 13, 1, '#AAAAAA');
+        r(1, 1, 1, 13, '#AAAAAA');
+        r(2, 14, 13, 1, '#333333');
+        r(14, 2, 1, 12, '#333333');
+        r(3, 3, 10, 10, '#666666');
+        c.refresh();
+    }
+
+    genSquirrelIcon() {
+        // 14x14 squirrel face icon for UI
+        const c = this.textures.createCanvas('squirrel_icon', 14, 14);
+        const ctx = c.getContext();
+        const r = (x, y, w, h, col) => { ctx.fillStyle = col; ctx.fillRect(x, y, w, h); };
+        // Bushy tail (brown)
+        r(0, 3, 3, 8, '#8B4513');
+        r(0, 2, 2, 1, '#A0522D');
+        r(1, 10, 2, 2, '#A0522D');
+        // Body (brown)
+        r(3, 5, 7, 7, '#A0522D');
+        r(3, 4, 6, 1, '#C0724D');
+        // Head
+        r(4, 1, 6, 5, '#C0724D');
+        r(5, 0, 4, 1, '#A0522D');  // top of head
+        // Ears
+        r(4, 0, 1, 2, '#8B4513');
+        r(9, 0, 1, 2, '#8B4513');
+        // Eyes
+        r(5, 2, 1, 1, '#1a1a1a');
+        r(8, 2, 1, 1, '#1a1a1a');
+        // Nose
+        r(6, 4, 2, 1, '#FF6B6B');
+        // Feet/legs
+        r(4, 12, 2, 2, '#8B4513');
+        r(8, 12, 2, 2, '#8B4513');
+        c.refresh();
     }
 
     // ==================== BALLOONS ====================

@@ -5,30 +5,35 @@ const LEVEL_DATA = [
       platforms: [[200,420,3],[400,340,2],[600,260,2],[850,340,3],[1100,420,2],[1300,300,3],[1600,380,2],[1900,280,2],[2200,350,3],[2500,420,2]],
       enemies: [{type:'balloonboy',x:500,patrol:150},{type:'balloonboy',x:1400,patrol:100}],
       hearts: [[250,380],[450,300],[900,300],[1350,260],[2000,240],[2250,310]],
+      qblocks: [[460, 260], [1350, 228]],
       goalX: 2800
     },
     { world: 1, name: 'Primavera - Jardín Secreto',
       platforms: [[250,400,2],[450,320,2],[650,400,3],[900,280,2],[1150,380,2],[1350,260,3],[1600,350,2],[1850,420,2],[2100,300,3],[2400,380,2],[2600,260,2]],
       enemies: [{type:'balloonboy',x:700,patrol:120},{type:'chica',x:1400,patrol:100},{type:'balloonboy',x:2150,patrol:80}],
       hearts: [[300,360],[500,280],[700,360],[950,240],[1400,220],[1650,310],[2150,260],[2450,340]],
+      qblocks: [[920, 204], [1600, 268]],
       goalX: 2900
     },
     { world: 1, name: 'Primavera - Bosque Encantado',
       platforms: [[200,380,2],[400,300,2],[600,420,3],[800,260,2],[1050,350,2],[1300,280,3],[1550,400,2],[1800,320,2],[2050,250,2],[2300,380,3],[2550,300,2]],
       enemies: [{type:'chica',x:650,patrol:130},{type:'bonnie',x:1100,patrol:100},{type:'chica',x:1850,patrol:90},{type:'balloonboy',x:2350,patrol:80}],
       hearts: [[250,340],[450,260],[850,220],[1100,310],[1350,240],[1600,360],[2100,210],[2350,340],[2600,260]],
+      qblocks: [[820, 180], [1820, 244]],
       goalX: 2900
     },
     { world: 1, name: 'Primavera - Cascada de Flores',
       platforms: [[180,400,2],[380,320,2],[580,250,2],[780,380,3],[1000,280,2],[1250,400,2],[1450,300,3],[1700,220,2],[1950,350,2],[2200,280,2],[2450,400,3],[2650,300,2]],
       enemies: [{type:'bonnie',x:400,patrol:100},{type:'freddy',x:830,patrol:120},{type:'chica',x:1300,patrol:90},{type:'bonnie',x:2000,patrol:110},{type:'balloonboy',x:2500,patrol:80}],
       hearts: [[230,360],[430,280],[630,210],[1050,240],[1500,260],[1750,180],[2250,240],[2500,360],[2700,260]],
+      qblocks: [[600, 172], [1470, 220]],
       goalX: 2950
     },
     { world: 1, name: 'Primavera - El Gran Cerezo',
       platforms: [[200,420,3],[400,340,2],[550,260,2],[750,380,3],[950,280,2],[1200,400,2],[1400,300,2],[1600,220,2],[1850,350,3],[2100,260,2],[2350,380,2],[2550,280,3],[2750,200,2]],
       enemies: [{type:'freddy',x:300,patrol:130},{type:'bonnie',x:800,patrol:100},{type:'chica',x:1250,patrol:110},{type:'freddy',x:1900,patrol:90},{type:'balloonboy',x:2400,patrol:80},{type:'bonnie',x:2600,patrol:100}],
       hearts: [[250,380],[450,300],[600,220],[1000,240],[1450,260],[1650,180],[2150,220],[2400,340],[2600,240],[2800,160]],
+      qblocks: [[570, 180], [1420, 220], [2570, 200]],
       goalX: 3000
     },
     // WORLD 2 - PARQUE (Levels 6-10)
@@ -36,33 +41,39 @@ const LEVEL_DATA = [
       platforms: [[220,400,2],[420,320,3],[670,420,2],[870,280,2],[1120,380,3],[1350,260,2],[1600,400,2],[1850,300,2],[2100,380,3],[2350,260,2],[2600,400,2]],
       enemies: [{type:'foxy',x:470,patrol:140},{type:'freddy',x:920,patrol:100},{type:'foxy',x:1650,patrol:120}],
       hearts: [[270,360],[470,280],[720,380],[920,240],[1170,340],[1400,220],[1900,260],[2150,340],[2400,220],[2650,360]],
+      qblocks: [[890, 200], [1870, 220]],
       goalX: 2900
     },
     { world: 2, name: 'Parque - Fuente de los Deseos',
       platforms: [[200,380,2],[400,300,2],[650,420,3],[850,260,2],[1100,380,2],[1300,280,3],[1550,400,2],[1800,300,2],[2050,220,2],[2300,380,3],[2550,280,2]],
       enemies: [{type:'foxy',x:700,patrol:120},{type:'freddy',x:1150,patrol:100},{type:'bonnie',x:1850,patrol:110},{type:'foxy',x:2350,patrol:90}],
       hearts: [[250,340],[450,260],[700,380],[900,220],[1150,340],[1350,240],[1600,360],[1850,260],[2100,180],[2350,340],[2600,240]],
+      qblocks: [[870, 180], [2070, 140]],
       goalX: 2950
     },
     { world: 2, name: 'Parque - Luces de la Noche',
       platforms: [[180,400,2],[380,300,2],[600,420,3],[800,250,2],[1050,380,2],[1250,260,2],[1500,400,3],[1700,280,2],[1950,380,2],[2200,240,2],[2450,380,3],[2650,280,2]],
       enemies: [{type:'freddy',x:430,patrol:100},{type:'foxy',x:850,patrol:130},{type:'chica',x:1300,patrol:90},{type:'bonnie',x:1750,patrol:110},{type:'foxy',x:2250,patrol:100}],
       hearts: [[230,360],[430,260],[650,380],[850,210],[1100,340],[1300,220],[1550,360],[1750,240],[2000,340],[2250,200],[2500,340],[2700,240]],
+      qblocks: [[820, 172], [1270, 180], [2220, 160]],
       goalX: 3000
     },
     { world: 2, name: 'Parque - Jardín de las Estrellas',
       platforms: [[200,380,2],[370,280,2],[550,400,3],[750,240,2],[1000,380,2],[1200,260,2],[1400,400,3],[1650,280,2],[1850,200,2],[2100,380,2],[2300,260,3],[2550,380,2],[2750,240,2]],
       enemies: [{type:'freddy',x:600,patrol:120},{type:'foxy',x:800,patrol:100},{type:'bonnie',x:1250,patrol:110},{type:'chica',x:1700,patrol:90},{type:'foxy',x:2150,patrol:130},{type:'freddy',x:2600,patrol:100}],
       hearts: [[250,340],[420,240],[600,360],[800,200],[1050,340],[1250,220],[1450,360],[1700,240],[1900,160],[2150,340],[2350,220],[2600,340],[2800,200]],
+      qblocks: [[770, 160], [1870, 120]],
       goalX: 3050
     },
     { world: 2, name: 'Parque - Nuestro Lugar Especial',
       platforms: [[200,420,3],[380,320,2],[530,240,2],[730,400,3],[930,280,2],[1130,200,2],[1380,380,2],[1580,260,2],[1780,400,3],[1980,280,2],[2180,200,2],[2430,380,2],[2630,260,3],[2830,180,2]],
       enemies: [{type:'freddy',x:280,patrol:120},{type:'foxy',x:780,patrol:130},{type:'bonnie',x:980,patrol:100},{type:'chica',x:1430,patrol:90},{type:'foxy',x:1830,patrol:110},{type:'freddy',x:2030,patrol:100},{type:'balloonboy',x:2480,patrol:80},{type:'foxy',x:2680,patrol:120}],
       hearts: [[250,380],[430,280],[580,200],[780,360],[980,240],[1180,160],[1430,340],[1630,220],[1830,360],[2030,240],[2230,160],[2480,340],[2680,220],[2880,140]],
+      qblocks: [[550, 160], [1600, 180], [2650, 180]],
       goalX: 3100
     }
 ];
+
 
 class GameScene extends Phaser.Scene {
     constructor() {
@@ -77,6 +88,13 @@ class GameScene extends Phaser.Scene {
         this.isWorld1 = this.levelData.world === 1;
         this.isDead = false;
 
+        // Squirrel power state
+        this.squirrelPower = false;
+        this.flyEnergy = 0;
+        this.maxFlyEnergy = 100;
+        this.flutterLeft = 0;   // flutter jumps remaining
+        this.prevJump = false;
+
         const levelW = this.levelData.goalX + 400;
 
         // ============ BACKGROUND ============
@@ -89,6 +107,10 @@ class GameScene extends Phaser.Scene {
 
         // ============ FLOWERS (after ground so they render on top) ============
         this.createFlowers(levelW);
+
+        // ============ QUESTION BLOCKS ============
+        this.qblocksGroup = this.physics.add.staticGroup();
+        this.createQBlocks();
 
         // ============ PLAYER ============
         this.player = this.physics.add.sprite(60, 400, 'player');
@@ -119,6 +141,7 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.player, this.platforms);
         this.physics.add.collider(this.heartsGroup, this.platforms);
         this.physics.add.collider(this.enemiesGroup, this.platforms);
+        this.physics.add.collider(this.player, this.qblocksGroup, this.hitQBlock, null, this);
         this.physics.add.overlap(this.player, this.heartsGroup, this.collectHeart, null, this);
         this.physics.add.overlap(this.player, this.enemiesGroup, this.hitEnemy, null, this);
         this.physics.add.overlap(this.player, this.balloonsGroup, this.hitBalloon, null, this);
@@ -145,6 +168,7 @@ class GameScene extends Phaser.Scene {
         // Heart float animation timer
         this.heartTimer = 0;
     }
+
 
     // ==================== BACKGROUND ====================
     createBackground(levelW) {
@@ -436,6 +460,106 @@ class GameScene extends Phaser.Scene {
         });
     }
 
+    // ==================== QUESTION BLOCKS ====================
+    createQBlocks() {
+        if (!this.levelData.qblocks) return;
+        this.levelData.qblocks.forEach(q => {
+            const block = this.qblocksGroup.create(q[0], q[1], 'qblock');
+            block.setScale(2.5);
+            block.refreshBody();
+            block.body.setSize(16, 16);
+            block.isHit = false;
+            // Gentle floating animation
+            this.tweens.add({
+                targets: block,
+                y: q[1] - 3,
+                duration: 900,
+                yoyo: true,
+                repeat: -1,
+                ease: 'Sine.easeInOut'
+            });
+        });
+    }
+
+    hitQBlock(player, block) {
+        // Only trigger when player hits from below (head hits bottom of block)
+        if (block.isHit) return;
+        if (player.body.blocked.up) {
+            block.isHit = true;
+
+            // Stop floating tween and bump the block
+            this.tweens.killTweensOf(block);
+            this.tweens.add({
+                targets: block,
+                y: block.y - 10,
+                duration: 80,
+                yoyo: true,
+                ease: 'Power2',
+                onComplete: () => {
+                    block.setTexture('qblock_hit');
+                    block.refreshBody();
+                }
+            });
+
+            // Spawn sparkle effect
+            for (let i = 0; i < 6; i++) {
+                const spark = this.add.rectangle(
+                    block.x + Phaser.Math.Between(-16, 16),
+                    block.y - 10,
+                    4, 4, 0xFFD700
+                );
+                this.tweens.add({
+                    targets: spark,
+                    x: spark.x + Phaser.Math.Between(-40, 40),
+                    y: spark.y + Phaser.Math.Between(-50, -10),
+                    alpha: 0,
+                    duration: 500,
+                    ease: 'Power2',
+                    onComplete: () => spark.destroy()
+                });
+            }
+
+            this.activateSquirrelPower();
+        }
+    }
+
+    activateSquirrelPower() {
+        this.squirrelPower = true;
+        this.flyEnergy = this.maxFlyEnergy;
+        this.flutterLeft = 4; // 4 flutter jumps while power lasts
+
+        // Update HUD
+        this.squirrelHUD.setVisible(true);
+        this.updateFlyBar();
+
+        // Tint player orange-brown like a squirrel
+        this.player.setTint(0xD2691E);
+
+        // Show power-up text
+        const pwrText = this.add.text(this.player.x, this.player.y - 60, '🐿️ ¡PODER ARDILLA!', {
+            fontSize: '18px', fill: '#FF8C00', fontFamily: 'Arial', fontStyle: 'bold',
+            stroke: '#000', strokeThickness: 3
+        }).setOrigin(0.5).setScrollFactor(1).setDepth(50);
+
+        this.tweens.add({
+            targets: pwrText,
+            y: pwrText.y - 60,
+            alpha: 0,
+            duration: 1500,
+            ease: 'Power2',
+            onComplete: () => pwrText.destroy()
+        });
+    }
+
+    updateFlyBar() {
+        if (!this.squirrelHUD) return;
+        const pct = this.flyEnergy / this.maxFlyEnergy;
+        this.flyBarFill.scaleX = Math.max(0, pct);
+        // Color: green → yellow → red
+        const col = pct > 0.5 ? 0x44FF44 : pct > 0.25 ? 0xFFCC00 : 0xFF4444;
+        this.flyBarFill.setFillStyle(col);
+    }
+
     // ==================== UI ====================
     createUI() {
         const worldName = this.isWorld1 ? '🌸 Primavera' : '🌳 Parque';
@@ -465,7 +589,26 @@ class GameScene extends Phaser.Scene {
         this.add.text(400, 560, '"' + this.levelData.name + '"', {
             fontSize: '14px', fill: '#FFFFFF', fontFamily: 'Arial', fontStyle: 'italic'
         }).setOrigin(0.5, 0).setScrollFactor(0).setAlpha(0.6);
+
+        // ===== SQUIRREL POWER HUD (hidden until activated) =====
+        this.squirrelHUD = this.add.container(16, 52).setScrollFactor(0).setVisible(false).setDepth(10);
+        // Icon
+        const sqIcon = this.add.image(7, 7, 'squirrel_icon').setScale(2);
+        // Label
+        const sqLabel = this.add.text(22, 0, '🐿️ ARDILLA', {
+            fontSize: '11px', fill: '#FF8C00', fontFamily: 'Arial', fontStyle: 'bold'
+        });
+        // Bar background
+        const barBg = this.add.rectangle(22, 16, 80, 8, 0x333333).setOrigin(0, 0.5);
+        // Bar fill (starts full)
+        this.flyBarFill = this.add.rectangle(22, 16, 80, 8, 0x44FF44).setOrigin(0, 0.5);
+        // Flutter counter
+        this.flutterText = this.add.text(106, 10, '✈x4', {
+            fontSize: '11px', fill: '#FFFFFF', fontFamily: 'Arial', fontStyle: 'bold'
+        });
+        this.squirrelHUD.add([sqIcon, sqLabel, barBg, this.flyBarFill, this.flutterText]);
     }
+
 
     // ==================== UPDATE LOOP ====================
     update(time, delta) {
@@ -480,6 +623,8 @@ class GameScene extends Phaser.Scene {
         const left = this.cursors.left.isDown || this.wasd.left.isDown || (window.mobileControls && window.mobileControls.left);
         const right = this.cursors.right.isDown || this.wasd.right.isDown || (window.mobileControls && window.mobileControls.right);
         const jump = this.cursors.up.isDown || this.wasd.up.isDown || this.wasd.space.isDown || (window.mobileControls && window.mobileControls.up);
+        const jumpJustPressed = jump && !this.prevJump;
+        this.prevJump = jump;
 
         if (left) {
             this.player.setVelocityX(-220);
@@ -494,13 +639,72 @@ class GameScene extends Phaser.Scene {
             if (onGround) this.player.setTexture('player');
         }
 
-        if (jump && onGround) {
+        // === NORMAL JUMP ===
+        if (jumpJustPressed && onGround) {
             this.player.setVelocityY(-500);
             this.player.setTexture('player_jump');
         }
 
+        // === SQUIRREL POWER: FLUTTER JUMP & GLIDE ===
+        if (this.squirrelPower) {
+            // Regenerate fly energy slowly when on ground
+            if (onGround) {
+                this.flyEnergy = Math.min(this.maxFlyEnergy, this.flyEnergy + 18 * (delta / 1000));
+                // Restore flutter charges when back on ground
+                if (this.flutterLeft < 4) this.flutterLeft = 4;
+            }
+
+            // Flutter jump: press jump while airborne
+            if (jumpJustPressed && !onGround && this.flutterLeft > 0 && this.flyEnergy > 0) {
+                this.flutterLeft--;
+                this.flyEnergy = Math.max(0, this.flyEnergy - 22);
+                this.player.setVelocityY(-380); // softer than normal jump
+                this.player.setTexture('player_jump');
+
+                // Orange sparkle particles
+                for (let i = 0; i < 4; i++) {
+                    const sp = this.add.rectangle(
+                        this.player.x + Phaser.Math.Between(-10, 10),
+                        this.player.y + Phaser.Math.Between(0, 10),
+                        5, 5, 0xFF8C00
+                    );
+                    this.tweens.add({
+                        targets: sp,
+                        x: sp.x + Phaser.Math.Between(-20, 20),
+                        y: sp.y + 30,
+                        alpha: 0, duration: 300,
+                        onComplete: () => sp.destroy()
+                    });
+                }
+                this.flutterText.setText('✈x' + this.flutterLeft);
+            }
+
+            // Glide: hold jump while in air to reduce fall speed
+            if (jump && !onGround && this.flyEnergy > 0) {
+                if (this.player.body.velocity.y > 80) {
+                    this.player.body.setVelocityY(this.player.body.velocity.y - 12);
+                }
+                this.flyEnergy = Math.max(0, this.flyEnergy - 6 * (delta / 1000));
+            }
+
+            // Energy depleted: lose power
+            if (this.flyEnergy <= 0 && !onGround) {
+                this.squirrelPower = false;
+                this.player.clearTint();
+                this.squirrelHUD.setVisible(false);
+            }
+
+            // Update HUD
+            this.updateFlyBar();
+            if (onGround) this.flutterText.setText('✈x' + this.flutterLeft);
+        }
+
         if (!onGround) {
             this.player.setTexture('player_jump');
+            // Orange tint shimmer while using squirrel power in air
+            if (this.squirrelPower) this.player.setTint(0xE07000);
+        } else if (this.squirrelPower) {
+            this.player.setTint(0xD2691E);
         }
 
         // Heart floating animation
@@ -526,7 +730,7 @@ class GameScene extends Phaser.Scene {
 
             // Walking animation for all animatronics
             enemy.walkTimer += delta;
-            if (enemy.walkTimer > 300) { // Toggle every 300ms
+            if (enemy.walkTimer > 300) {
                 enemy.walkTimer = 0;
                 enemy.walkFrame = enemy.walkFrame === 0 ? 1 : 0;
                 const baseTexture = enemy.enemyType;
@@ -537,19 +741,17 @@ class GameScene extends Phaser.Scene {
             if (enemy.enemyType === 'balloonboy') {
                 enemy.balloonTimer -= delta;
                 if (enemy.balloonTimer <= 0) {
-                    enemy.balloonTimer = Phaser.Math.Between(2500, 4500); // Shoot every 2.5 to 4.5 seconds
+                    enemy.balloonTimer = Phaser.Math.Between(2500, 4500);
                     this.releaseBalloon(enemy);
                 }
             }
         });
 
-        // Update active balloons (sinusoidal float + auto destruction)
+        // Update active balloons
         this.balloonsGroup.children.iterate(balloon => {
             if (balloon && balloon.active) {
                 balloon.sineTimer = (balloon.sineTimer || 0) + delta * 0.003;
                 balloon.body.setVelocityY(balloon.baseVy + Math.sin(balloon.sineTimer) * 25);
-                
-                // Destroy if too far from the camera/player
                 if (Math.abs(balloon.x - this.player.x) > 800) {
                     balloon.destroy();
                 }
@@ -562,9 +764,9 @@ class GameScene extends Phaser.Scene {
         }
     }
 
+
     // ==================== INTERACTIONS ====================
     collectHeart(player, heart) {
-        // Particle-like effect
         for (let i = 0; i < 5; i++) {
             const p = this.add.image(heart.x, heart.y, 'heart');
             p.setScale(1.5);
@@ -572,10 +774,7 @@ class GameScene extends Phaser.Scene {
                 targets: p,
                 x: heart.x + Phaser.Math.Between(-40, 40),
                 y: heart.y + Phaser.Math.Between(-50, -20),
-                alpha: 0,
-                scale: 0.5,
-                duration: 400,
-                ease: 'Power2',
+                alpha: 0, scale: 0.5, duration: 400, ease: 'Power2',
                 onComplete: () => p.destroy()
             });
         }
@@ -586,23 +785,58 @@ class GameScene extends Phaser.Scene {
     }
 
     hitEnemy(player, enemy) {
-        // Check if player is jumping ON the enemy (stomp)
+        // === SQUIRREL ATTACK: flying into an enemy destroys it ===
+        if (this.squirrelPower && !player.body.blocked.down) {
+            // Squirrel slam — kill enemy regardless of angle
+            player.setVelocityY(-250);
+            this.tweens.add({
+                targets: enemy,
+                alpha: 0, scaleX: 3, scaleY: 0.5, duration: 200,
+                onComplete: () => enemy.disableBody(true, true)
+            });
+            // Bonus points for squirrel kill
+            this.score += 10;
+            this.registry.set('score', this.score);
+            this.scoreText.setText('❤️ ' + this.score);
+
+            // Score popup
+            const bonus = this.add.text(enemy.x, enemy.y - 20, '+10 ⚡', {
+                fontSize: '16px', fill: '#FF8C00', fontFamily: 'Arial', fontStyle: 'bold',
+                stroke: '#000', strokeThickness: 2
+            }).setOrigin(0.5).setDepth(50);
+            this.tweens.add({
+                targets: bonus, y: bonus.y - 50, alpha: 0, duration: 800,
+                onComplete: () => bonus.destroy()
+            });
+            return;
+        }
+
+        // === NORMAL STOMP ===
         if (player.body.velocity.y > 0 && player.y < enemy.y - 10) {
-            // Stomp! Kill enemy
             player.setVelocityY(-300);
             this.tweens.add({
                 targets: enemy,
-                alpha: 0, scaleX: 3, scaleY: 0.5,
-                duration: 200,
+                alpha: 0, scaleX: 3, scaleY: 0.5, duration: 200,
                 onComplete: () => enemy.disableBody(true, true)
             });
             this.score += 5;
             this.registry.set('score', this.score);
             this.scoreText.setText('❤️ ' + this.score);
         } else {
-            this.playerDie();
+            // Hit by enemy: lose squirrel power first (buffer), then die
+            if (this.squirrelPower) {
+                this.squirrelPower = false;
+                this.flyEnergy = 0;
+                this.player.clearTint();
+                this.squirrelHUD.setVisible(false);
+                player.setVelocityY(-300);
+                this.cameras.main.flash(150, 255, 100, 0, true);
+            } else {
+                this.playerDie();
+            }
         }
     }
+
 
     releaseBalloon(enemy) {
         const colors = ['red', 'blue', 'yellow', 'green'];
