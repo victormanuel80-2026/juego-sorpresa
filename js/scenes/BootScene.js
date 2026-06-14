@@ -82,6 +82,9 @@ class BootScene extends Phaser.Scene {
         this.genSquirrelIcon();
         this.genPlayerSquirrel();
         this.genPlayerSquirrelFly();
+        this.genCupcake();
+        this.genBonnieGuitar();
+        this.genSoundwave();
     }
 
     // ==================== QUESTION BLOCK ====================
@@ -1079,6 +1082,94 @@ class BootScene extends Phaser.Scene {
         ctx.fillStyle = '#C2185B'; ctx.fillRect(3, 2, 1, 1);
         // Highlight
         ctx.fillStyle = '#FFB6C1'; ctx.fillRect(2, 1, 1, 1);
+        c.refresh();
+    }
+
+    genCupcake() {
+        const pal = {
+            'P': '#FF69B4', // Pink frosting
+            'K': '#000000', // Black
+            'W': '#FFFFFF', // White
+            'B': '#8B4513', // Brown base
+            'Y': '#FFD700', // Yellow flame
+            'C': '#00d2ff', // Cyan candle
+            '.': 'transparent'
+        };
+        const rows = [
+            '.....YY.....',
+            '.....CC.....',
+            '...PPPPPP...',
+            '..PPPPPPPP..',
+            '.PPKKPPKKPP.',
+            '.PKWWPKWWKP.',
+            '.PPKKPPKKPP.',
+            'PPPPPPPPPPPP',
+            '.BBBBBBBBBB.',
+            '.BBBBBBBBBB.',
+            '..BBBBBBBB..',
+            '...BBBBBB...',
+        ];
+        const c = this.textures.createCanvas('cupcake', 12, 12);
+        const ctx = c.getContext();
+        this.drawMap(ctx, pal, rows, 0, 0);
+        c.refresh();
+    }
+
+    genBonnieGuitar() {
+        const pal = {
+            'P':'#6f42c1','p':'#8c52ff','S':'#d8b4f8',
+            'E':'#39ff14','W':'#FFFFFF','H':'#1a1a1a',
+            'R':'#d90429','G':'#777777','N':'#1a1a1a',
+            'g':'#8B4513', // Guitar wood brown
+            'r':'#ff0000', // Red guitar body
+            'w':'#dddddd'  // Guitar neck/strings
+        };
+        const rows = [
+            '..PP......PP..',
+            '..PP......PP..',
+            '..PS......SP..',
+            '..PS......SP..',
+            '..PP......PP..',
+            '..PP......PP..',
+            '..PPPPPPPPPP..',
+            '.PPpEpPPpEpPP.',
+            '.PPWEWPPWEWPP.',
+            '..PPSSNBSSPP..',
+            '..PSSSSSSSss..',
+            '...PWWWWWP....',
+            '....PPPPP.....',
+            '....RRRRRR....',
+            '..PPPPPPwPPP..',
+            '..PPSSSwwSPP..',
+            '..PPSwwwwwPP..',
+            '..PPwwrrrwPP..',
+            '...PPrrrPP....',
+            '....GGrrGG....',
+            '....PP..PP....',
+            '....PP..PP....',
+            '....GG..GG....',
+            '...PPP..PPP...',
+            '...PPP..PPP...',
+        ];
+        const c = this.textures.createCanvas('bonnie_guitar', 14, 25);
+        const ctx = c.getContext();
+        this.drawMap(ctx, pal, rows, 0, 0);
+        c.refresh();
+    }
+
+    genSoundwave() {
+        const c = this.textures.createCanvas('soundwave', 16, 16);
+        const ctx = c.getContext();
+        const r = (x,y,w,h,col) => { ctx.fillStyle=col; ctx.fillRect(x,y,w,h); };
+        // Draw 3 concentric arcs pointing right
+        r(1, 2, 2, 12, 'rgba(111, 66, 193, 0.8)'); // Purple wave 1
+        r(3, 4, 1, 8, 'rgba(111, 66, 193, 0.8)');
+        
+        r(6, 1, 2, 14, 'rgba(57, 255, 20, 0.6)');  // Green wave 2
+        r(8, 3, 1, 10, 'rgba(57, 255, 20, 0.6)');
+
+        r(11, 0, 2, 16, 'rgba(0, 210, 255, 0.4)'); // Cyan wave 3
+        r(13, 2, 1, 12, 'rgba(0, 210, 255, 0.4)');
         c.refresh();
     }
 }

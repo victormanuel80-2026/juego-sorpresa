@@ -94,6 +94,7 @@ class GameScene extends Phaser.Scene {
         this.maxFlyEnergy = 100;
         this.flutterLeft = 0;   // flutter jumps remaining
         this.prevJump = false;
+        this.playerStunned = false;
 
         const levelW = this.levelData.goalX + 400;
 
@@ -131,6 +132,9 @@ class GameScene extends Phaser.Scene {
         // ============ BALLOONS ============
         this.balloonsGroup = this.physics.add.group();
 
+        // ============ CUPCAKES ============
+        this.cupcakesGroup = this.physics.add.group();
+
         // ============ GOAL ============
         this.goal = this.physics.add.sprite(this.levelData.goalX, 440, 'goal');
         this.goal.setScale(3);
@@ -142,9 +146,11 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.heartsGroup, this.platforms);
         this.physics.add.collider(this.enemiesGroup, this.platforms);
         this.physics.add.collider(this.player, this.qblocksGroup, this.hitQBlock, null, this);
+        this.physics.add.collider(this.cupcakesGroup, this.platforms, this.hitCupcakePlatform, null, this);
         this.physics.add.overlap(this.player, this.heartsGroup, this.collectHeart, null, this);
         this.physics.add.overlap(this.player, this.enemiesGroup, this.hitEnemy, null, this);
         this.physics.add.overlap(this.player, this.balloonsGroup, this.hitBalloon, null, this);
+        this.physics.add.overlap(this.player, this.cupcakesGroup, this.hitCupcake, null, this);
         this.physics.add.overlap(this.player, this.goal, this.winLevel, null, this);
 
         // ============ CAMERA ============
@@ -456,6 +462,11 @@ class GameScene extends Phaser.Scene {
             enemy.walkFrame = 0; // Current walk frame
             if (e.type === 'balloonboy') {
                 enemy.balloonTimer = Phaser.Math.Between(1000, 3000);
+            } else if (e.type === 'chica') {
+                enemy.cupcakeTimer = Phaser.Math.Between(1500, 3000);
+            } else if (e.type === 'bonnie') {
+                enemy.guitarBlastTimer = 0;
+                enemy.isGuitarBlasting = false;
             }
         });
     }
@@ -626,23 +637,27 @@ class GameScene extends Phaser.Scene {
         const jumpJustPressed = jump && !this.prevJump;
         this.prevJump = jump;
 
-        if (left) {
-            this.player.setVelocityX(-220);
-            this.player.setFlipX(true);
-            if (onGround) this.player.setTexture(this.squirrelPower ? 'player_squirrel' : 'player_walk');
-        } else if (right) {
-            this.player.setVelocityX(220);
-            this.player.setFlipX(false);
-            if (onGround) this.player.setTexture(this.squirrelPower ? 'player_squirrel' : 'player_walk');
+        if (this.playerStunned) {
+            // Player is stunned by Bonnie's guitar blast, let physics knockback take over
         } else {
-            this.player.setVelocityX(0);
-            if (onGround) this.player.setTexture(this.squirrelPower ? 'player_squirrel' : 'player');
-        }
+            if (left) {
+                this.player.setVelocityX(-220);
+                this.player.setFlipX(true);
+                if (onGround) this.player.setTexture(this.squirrelPower ? 'player_squirrel' : 'player_walk');
+            } else if (right) {
+                this.player.setVelocityX(220);
+                this.player.setFlipX(false);
+                if (onGround) this.player.setTexture(this.squirrelPower ? 'player_squirrel' : 'player_walk');
+            } else {
+                this.player.setVelocityX(0);
+                if (onGround) this.player.setTexture(this.squirrelPower ? 'player_squirrel' : 'player');
+            }
 
-        // === NORMAL JUMP ===
-        if (jumpJustPressed && onGround) {
-            this.player.setVelocityY(-500);
-            this.player.setTexture(this.squirrelPower ? 'player_squirrel_fly' : 'player_jump');
+            // === NORMAL JUMP ===
+            if (jumpJustPressed && onGround) {
+                this.player.setVelocityY(-500);
+                this.player.setTexture(this.squirrelPower ? 'player_squirrel_fly' : 'player_jump');
+            }
         }
 
         // === SQUIRREL POWER: FLUTTER JUMP & GLIDE ===
@@ -725,6 +740,91 @@ class GameScene extends Phaser.Scene {
         // Enemy patrol AI + walking animation
         this.enemiesGroup.children.iterate(enemy => {
             if (!enemy || !enemy.active) return;
+
+            // Handle Bonnie blast cooldowns
+            if (enemy.enemyType === 'bonnie') {
+                if (enemy.guitarBlastTimer > 0) {
+                    enemy.guitarBlastTimer -= delta;
+                }
+                
+                // If currently blasting, skip patrol movement and walking animation
+                if (enemy.isGuitarBlasting) {
+                    return;
+                }
+
+                // Check distance to trigger guitar blast
+                if (enemy.guitarBlastTimer <= 0 && !this.isDead) {
+                    const distH = Math.abs(this.player.x - enemy.x);
+                    const distV = Math.abs(this.player.y - enemy.y);
+                    if (distH < 110 && distV < 60) {
+                        // Trigger guitar blast!
+                        enemy.isGuitarBlasting = true;
+                        enemy.setVelocityX(0);
+                        enemy.setTexture('bonnie_guitar');
+                        enemy.guitarBlastTimer = 2500; // 2.5 seconds cooldown
+                        
+                        // Face the player when blasting
+                        enemy.setFlipX(this.player.x < enemy.x);
+
+                        // Create soundwave particle
+                        const wave = this.add.image(enemy.x + (enemy.flipX ? -20 : 20), enemy.y, 'soundwave');
+                        wave.setScale(2.5);
+                        wave.setFlipX(enemy.flipX);
+                        this.tweens.add({
+                            targets: wave,
+                            x: wave.x + (enemy.flipX ? -120 : 120),
+                            scaleX: 5,
+                            scaleY: 5,
+                            alpha: 0,
+                            duration: 450,
+                            onComplete: () => wave.destroy()
+                        });
+
+                        // Push player if they are in range
+                        const pushDir = this.player.x < enemy.x ? -1 : 1;
+                        this.player.setVelocityX(pushDir * 420);
+                        this.player.setVelocityY(-220);
+                        this.playerStunned = true;
+                        
+                        this.time.delayedCall(300, () => {
+                            this.playerStunned = false;
+                        });
+
+                        // Visual shock text
+                        const shockText = this.add.text(this.player.x, this.player.y - 35, '🎸 BLAST! 🎸', {
+                            fontSize: '12px', fill: '#39ff14', fontFamily: 'Arial', fontStyle: 'bold',
+                            stroke: '#000000', strokeThickness: 3
+                        }).setOrigin(0.5);
+                        this.tweens.add({
+                            targets: shockText,
+                            y: shockText.y - 30,
+                            alpha: 0,
+                            duration: 600,
+                            onComplete: () => shockText.destroy()
+                        });
+
+                        // Resume patrol after 800ms
+                        this.time.delayedCall(800, () => {
+                            if (enemy && enemy.active) {
+                                enemy.isGuitarBlasting = false;
+                                enemy.setVelocityX(enemy.direction * (60 + this.levelIdx * 5));
+                            }
+                        });
+                        
+                        return; // skip patrol updates for this frame
+                    }
+                }
+            }
+
+            // Chica cupcake throwing timer
+            if (enemy.enemyType === 'chica' && !this.isDead) {
+                enemy.cupcakeTimer -= delta;
+                if (enemy.cupcakeTimer <= 0) {
+                    enemy.cupcakeTimer = Phaser.Math.Between(3000, 4500); // 3 to 4.5 seconds
+                    this.throwCupcake(enemy);
+                }
+            }
+
             if (enemy.x >= enemy.patrolEnd) {
                 enemy.direction = -1;
                 enemy.setVelocityX(-(60 + this.levelIdx * 5));
@@ -1001,5 +1101,50 @@ class GameScene extends Phaser.Scene {
         this.time.delayedCall(600, () => {
             this.scene.start('CardScene');
         });
+    }
+
+    throwCupcake(chica) {
+        if (!chica.active || this.isDead) return;
+        
+        // Only throw if the player is reasonably close (e.g. 500 pixels)
+        const dist = Phaser.Math.Distance.Between(chica.x, chica.y, this.player.x, this.player.y);
+        if (dist > 500) return;
+
+        const cupcake = this.cupcakesGroup.create(chica.x, chica.y - 15, 'cupcake');
+        cupcake.setScale(2.5);
+        cupcake.body.setAllowGravity(true);
+        cupcake.body.setSize(10, 10);
+        cupcake.body.setOffset(1, 1);
+        
+        // Calculate throw direction towards player
+        const dir = this.player.x < chica.x ? -1 : 1;
+        
+        // Parabolic arc speed (medium difficulty)
+        const vx = dir * 180;
+        const vy = -320; // lobs upward and falls down
+        
+        cupcake.setVelocity(vx, vy);
+        cupcake.setAngularVelocity(dir * 180); // rotates as it flies
+    }
+
+    hitCupcakePlatform(cupcake, platform) {
+        cupcake.destroy();
+    }
+
+    hitCupcake(player, cupcake) {
+        cupcake.destroy();
+        // If in squirrel mode, lose power instead of dying
+        if (this.squirrelPower) {
+            this.squirrelPower = false;
+            this.flyEnergy = 0;
+            this.flutterLeft = 0;
+            this.player.clearTint();
+            this.player.setTexture('player');
+            this.squirrelHUD.setVisible(false);
+            player.setVelocityY(-300);
+            this.cameras.main.flash(150, 255, 0, 0, true);
+        } else {
+            this.playerDie();
+        }
     }
 }
